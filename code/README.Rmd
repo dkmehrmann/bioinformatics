@@ -1,0 +1,24 @@
+---
+title: "README"
+author: "Andrew Mehrmann"
+date: "May 2, 2016"
+output: 
+  html_document:
+    number_sections: true
+---
+
+# data_steps.R
+
+Reads in the GSE file and creates training and test files for the original analysis. Drops 3 observations for NA values and quite a few predictors not present in all samples. Then we normalize the data according to the paper.
+
+# EDA.R
+
+Gets general information about the data from the original analysis, mostly to ensure our data looks the same as that used in the paper.
+
+# reproduce.R
+
+Attempted to reproduce the paper results and found a problem with the data such that we can only reproduce the results on the test set.
+
+# analyses.R
+
+The meat of this paper, currently implements Naive Bayes, Thresholded Naive Bayes, and LASSO
