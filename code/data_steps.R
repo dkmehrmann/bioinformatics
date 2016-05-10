@@ -24,11 +24,13 @@ train_ind <- p$characteristics_ch1.2 == "set: training"
 df <- data.frame(t(mtx), Y, train_ind)
 
 # remove rows with all missing reads
+dim(df)
 df <- df[which(rowSums(is.na(df)) != 41000),]
+dim(df)
 
 # remove columns with misssing values
 df <- df[,which(colSums(is.na(df)) == 0)]
-
+dim(df)
 #### Split into Training and Test ###############
 
 train <- subset(df, train_ind==T)
@@ -73,10 +75,15 @@ normalize <- function(dataframe){
   return(d)
 }
 
-# apply to our data
-X.train <- normalize(X.train)
-X.test <- normalize(X.test)
+## need to combine DFs to normalize. They didnt
+## do this but predictions are terrible otherwise
 
+X <- rbind(X.train, X.test)
+X <- normalize(X)
+
+# resplit the data
+X.train <- X[1:176,]
+X.test <- X[177:196,]
 
 #### Save for Later and Clean Up ################
 save(Y.train, Y.test, X.train, X.test, file="./data/init_data.RData")

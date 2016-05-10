@@ -1,5 +1,5 @@
 setwd("~/Homework/STAT_530/Project/")
-
+library(GEOquery)
 #### Reproduce the Paper ########################
 gse <- getGEO('GSE29210', destdir="./raw")
 gse <- gse[[1]]
