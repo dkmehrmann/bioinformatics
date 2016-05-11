@@ -75,15 +75,10 @@ normalize <- function(dataframe){
   return(d)
 }
 
-## need to combine DFs to normalize. They didnt
-## do this but predictions are terrible otherwise
+# normalize
+X.train <- normalize(X.train)
+X.test <- normalize(X.test)
 
-X <- rbind(X.train, X.test)
-X <- normalize(X)
-
-# resplit the data
-X.train <- X[1:176,]
-X.test <- X[177:196,]
 
 #### Save for Later and Clean Up ################
 save(Y.train, Y.test, X.train, X.test, file="./data/init_data.RData")

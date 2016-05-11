@@ -1,6 +1,6 @@
 setwd("~/Homework/STAT_530/Project/")
 load(file='./data/init_data.RData')
-
+set.seed(1738)
 
 #### Naive Bayes ################################
 library(e1071)
@@ -34,4 +34,5 @@ sum(y.fit.rf != Y.train)/length(Y.train)
 y.pred.rf <- predict(rf, X.test)
 sum(y.pred.rf != Y.test)/length(Y.test)
 
+rf$confusion
 ## Clearly, something is wrong

@@ -17,6 +17,7 @@ train_ind <- p$characteristics_ch1.2 == "set: training"
 df <- data.frame(t(mtx), Y, train_ind)
 
 # some of the necessary values are NA
+mtx['A_32_P104334',]
 # we take only the ones for which is is finite
 df <- df[is.finite(df[,'A_32_P104334']),]
 X <- df[,-c(41001,41002)]
