@@ -70,7 +70,7 @@ It should be noted that I did not optimize the hyperparameters of the Random For
 
 Abandoning the methodology of the paper, I simply used their raw data, unnormalized. I thought methods that implement Bootstrapping would be best for this dataset with so few observations, so I did not proceed further with Naive Bayes. I settled on 3 algorithms to compare: LASSO, Random Forest, and Gradient Boosted Trees. The full dataset was 196 observations of 27,688 features after removing the null observations and features with missing values. I made my own training and test sets with a roughly 67-33 split resulting in 147 training observations and 49 test observations. The original training/testing indicator that came with the GEO data was ignored.
 
-The simplicity with which the authors were able to delineate ER-status should not be overlooked. Their classifier only used 3 genes to separate patients based on ER-status. A more careful examination however would recognize that it took all the data to normalize those features. Nonetheless, as the authors encountered when attempting to validate their model on other datasets, RNA sequencing isn't perfect and a simpler model gives more portability to other RNA-seq platforms.
+The simplicity with which the authors were able to delineate ER-status should not be overlooked. Their classifier only used 3 features to separate patients based on ER-status. A more careful examination however would recognize that it took all the data to normalize those features. Nonetheless, as the authors encountered when attempting to validate their model on other datasets, RNA sequencing isn't perfect and a simpler model gives more portability to other RNA-seq platforms.
 
 # Results
 
@@ -80,20 +80,19 @@ The LASSO model was fit using `glmnet` and 10-fold cross-validation driven by AU
 
 ![LASSO Plot](lasso.png)
 
-This 11-term model gave a training accuracy of 0.87 and a test accuracy of 0.90. It predicted 5 observations as $E+-$ that were actually $ER-$, or false negatives. This gave perfect sensitivity of 1 and specificity of 0.72. 
+This 11-term model gave a training accuracy of 0.87 and a test accuracy of 0.90. It predicted 5 observations as $E+$ that were actually $ER-$, or false negatives. This gave perfect sensitivity of 1 and specificity of 0.72. 
 
 ### Random Forest
 
-I fit a Random Forest with default parameters, except since the data was so wide I set the number of trees to 500 instead of 100 to give more variables a chance to be represented in the model. This gave a training accuracy of 1 and a test accuracy of 0.92, so slightly overfit but a little better than the LASSO still. The variable importances did not align with the results from the paper so that plot was left out. The OOB accuracy was 0.90, which supports the conclusion that the original train/test split and/or normalization process was bogus because this is closer to the "true" error rate of 0.92. The Random Forest also acheived a sensitivity of 0.97 and a specificity of 0.83. 
+I fit a Random Forest with default parameters, except since the data was so wide I set the number of trees to 500 instead of 100 to give more variables a chance to be represented in the model. This gave a training accuracy of 1 and a test accuracy of 0.92, so slightly overfit but a little better than the LASSO still. The variable importances did not align with the results from the paper so that plot was left out. The OOB accuracy was 0.90, which supports the conclusion that the original train/test split and/or normalization process was bogus because this is closer to the "true" accuracy of 0.92. The Random Forest also acheived a sensitivity of 0.97 and a specificity of 0.83. 
 
 ### Gradient Boosted Trees
 
 Since Gradient Boosted Trees are such a good predictor, I simply wanted to use them as a benchmark for the previous two models as well as the results from the paper. It should be noted that since my test set is larger than theirs this is not a one-to-one comparison as it is difficult to say how their model would have performed on my test set. Since I only wanted to use this model for benchmarking, I fed it the whole dataset and allowed it to perform 3-fold cross-validation internally. This gave me less control over how the data were split as well as less information about *how* the model might be missing, but was a great way to select the "optimal" model based on CV error.
 
-![GBM Plot](xgb.png)
-
 I ran 25 rounds with a learning rate of 0.05 and limited the depth of the trees to 5. The best iteration gave a training accuracy of 0.99 $\pm$ 0.02 and a test accuracy of 0.93 $\pm$ 0.02. This is fairly consistent with the Random Forest and LASSO models. Figure 3 shows how the error rates and standard errors behave through the boosting iterations.
 
+![GBM Plot](xgb.png)
 
 # Conclusions
 
